@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Shopify/sarama"
-	cluster "github.com/bsm/sarama-cluster"
+	"github.com/IBM/sarama"
 	cli "github.com/jawher/mow.cli"
 	"log"
 	"sort"
@@ -18,14 +17,14 @@ func consumerGroupsCmd(c *cli.Cmd) {
 
 	c.Action = func() {
 		cfg := config(*useSSL, *sslCAFile, *sslCertFile, *sslKeyFile)
-		consumerGroups(*cfg, splitFlatten(*bootstrapServers), sorted)
+		consumerGroups(cfg, splitFlatten(*bootstrapServers), sorted)
 	}
 }
 
-func consumerGroups(config cluster.Config, bootstrapServers []string, sorted *bool) {
+func consumerGroups(config *sarama.Config, bootstrapServers []string, sorted *bool) {
 	fmt.Printf("Listing consumer groups for all topics on broker(s) %q\n", strings.Join(bootstrapServers, ", "))
 
-	newAdmin, err := sarama.NewClusterAdmin(bootstrapServers, &config.Config)
+	newAdmin, err := sarama.NewClusterAdmin(bootstrapServers, config)
 	die(err)
 
 	defer func() {
