@@ -27,7 +27,7 @@ func listCmd(cmd *cli.Cmd) {
 }
 
 func list(cfg *sarama.Config, bootstrapServers []string, details *bool, queriedTopic *string, sorted *bool) {
-	fmt.Printf("Listing consumer groups for all topics on broker(s) %q\n", strings.Join(bootstrapServers, ", "))
+	fmt.Printf("Listing topics with size on broker(s) %q\n", strings.Join(bootstrapServers, ", "))
 
 	clusterAdmin, err := sarama.NewClusterAdmin(bootstrapServers, cfg)
 	die(err)
